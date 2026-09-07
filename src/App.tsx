@@ -3,118 +3,46 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import { Box, Button, Container, CssBaseline, Link, Snackbar, TextField, Typography } from '@mui/material'
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [stockPrice, setStockPrice] = useState<number | null>(null)
+  const [dte, setDte] = useState<number | null>(null)
+  const [iv, setIv] = useState<number | null>(null)
+  const [expectedMove, setExpectedMove] = useState(0)
+  const [moveUpPrice, setMoveUpPrice] = useState(0)
+  const [moveDownPrice, setMoveDownPrice] = useState(0)
+
+  function calculateExpectedMove() {
+    if (stockPrice == null || dte == null || iv == null) {
+      return
+    }
+
+    const expectedMove = stockPrice * iv *0.01 * Math.sqrt(dte / 365)
+    setExpectedMove(expectedMove)
+    setMoveUpPrice(stockPrice + expectedMove)
+    setMoveDownPrice(stockPrice - expectedMove)
+  }
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      {/* Title */}
+      <Typography variant="h3">Calculate Expected Price of Stock by IV</Typography>
+      {/* Input form */}
+      <Container>
+        <TextField id="stock-price" label="Current Stock price" type="number" value={stockPrice ?? ''} onChange={(e) => {setStockPrice(parseFloat(e.target.value) || null); calculateExpectedMove();}}/>
+        <TextField id="dte" label="Days to expiration" type="number" value={dte ?? ''} onChange={(e) => {setDte(parseInt(e.target.value) || null); calculateExpectedMove();}}/>
+        <TextField id="implied-volatility" label="Implied Volatility" type="number" value={iv ?? ''} onChange={(e) => {setIv(parseFloat(e.target.value) || null); calculateExpectedMove();}}/>        
+      </Container>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      {/* Display result */}
+      <Box>
+        <Typography variant="h5">Expected Move: {expectedMove}</Typography>
+        <Typography variant="h5">Move Down Price: {moveDownPrice}</Typography>
+        <Typography variant="h5">Move Up Price: {moveUpPrice}</Typography>
+      </Box>
     </>
   )
 }
