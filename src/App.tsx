@@ -1,7 +1,4 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 import { Box, Button, Container, CssBaseline, Link, Snackbar, TextField, Typography } from '@mui/material'
 
@@ -29,20 +26,27 @@ function App() {
   return (
     <>
       {/* Title */}
-      <Typography variant="h3">Calculate Expected Price of Stock by IV</Typography>
+      <Typography variant="h4" sx={{ margin: '10px 0 50px 0'}}>Calculate Expected Price of Stock by IV</Typography>
       {/* Input form */}
       <Container>
-        <TextField id="stock-price" label="Current Stock price" type="number" value={stockPrice ?? ''} onChange={(e) => {setStockPrice(parseFloat(e.target.value) || null); calculateExpectedMove();}}/>
-        <TextField id="dte" label="Days to expiration" type="number" value={dte ?? ''} onChange={(e) => {setDte(parseInt(e.target.value) || null); calculateExpectedMove();}}/>
-        <TextField id="implied-volatility" label="Implied Volatility" type="number" value={iv ?? ''} onChange={(e) => {setIv(parseFloat(e.target.value) || null); calculateExpectedMove();}}/>        
+        <Box sx={{ margin: '20px' }}>
+          <Box><TextField id="stock-price" label="Current Stock price" variant="standard" type="number" value={stockPrice ?? ''} onChange={(e) => {setStockPrice(parseFloat(e.target.value) || null); calculateExpectedMove();}}/></Box>
+          <Box><TextField id="dte" label="Days to expiration" variant="standard" type="number" value={dte ?? ''} onChange={(e) => {setDte(parseInt(e.target.value) || null); calculateExpectedMove();}}/></Box>
+          <Box><TextField id="implied-volatility" label="Implied Volatility" variant="standard" type="number" value={iv ?? ''} onChange={(e) => {setIv(parseFloat(e.target.value) || null); calculateExpectedMove();}}/></Box>
+        </Box>
+        <Box sx={{display: 'grid', placeItems: 'center', gridAutoFlow: 'column', justifyContent: 'space-evenly', marginTop: '50px'}} >
+          <Box  >
+            <Typography sx={{alignItems: 'center'}} variant="h5">Expected Move: {expectedMove}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="h5">Move Down Price: {moveDownPrice}</Typography>
+            <br/>
+            <Typography variant="h5">Move Up Price: {moveUpPrice}</Typography>
+          </Box>
+        </Box>
       </Container>
 
       {/* Display result */}
-      <Box>
-        <Typography variant="h5">Expected Move: {expectedMove}</Typography>
-        <Typography variant="h5">Move Down Price: {moveDownPrice}</Typography>
-        <Typography variant="h5">Move Up Price: {moveUpPrice}</Typography>
-      </Box>
     </>
   )
 }
