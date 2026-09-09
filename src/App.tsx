@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Box,  Container, TextField, Typography } from '@mui/material'
 
@@ -12,12 +12,22 @@ function App() {
   const [moveUpPrice, setMoveUpPrice] = useState(0)
   const [moveDownPrice, setMoveDownPrice] = useState(0)
 
+  useEffect(()=>{
+    calculateExpectedMove();
+  }, [stockPrice, dte, iv])
+
   function calculateExpectedMove() {
     if (stockPrice == null || dte == null || iv == null) {
       return
     }
 
-    const expectedMove = stockPrice * iv *0.01 * Math.sqrt(dte / 365)
+    const dtePortion = dte / 365;
+    const sqrtDtePortion = Math.sqrt(dtePortion);
+    const realIv =  iv *0.01;
+
+    console.log('Date portion: %f, Sqrt date portion: %f, IV: %f', dtePortion,sqrtDtePortion, realIv)
+
+    const expectedMove = stockPrice * realIv* sqrtDtePortion
     setExpectedMove(+expectedMove.toFixed(2))
     setMoveUpPrice(+(stockPrice + expectedMove).toFixed(2))
     setMoveDownPrice(+(stockPrice - expectedMove).toFixed(2))
