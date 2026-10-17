@@ -42,7 +42,7 @@ function App() {
         <Box sx={{ margin: '20px' }}>
           <Box><TextField id="stock-price" label="Current Stock price" slotProps={{ htmlInput: { style: { textAlign: 'center'}  }}} variant="standard" type="number" value={stockPrice ?? ''} onChange={(e) => {setStockPrice(parseFloat(e.target.value) || null);}}/></Box>
           <Box><TextField id="dte" label="Days to expiration" slotProps={{ htmlInput: { style: { textAlign: 'center'}  }}} variant="standard" type="number" value={dte ?? ''} onChange={(e) => {setDte(parseInt(e.target.value) || null); }}/></Box>
-          <Box><TextField id="implied-volatility" label="Implied Volatility" slotProps={{ htmlInput: { style: { textAlign: 'center'}  }}} variant="standard" type="number" value={iv ?? ''} onChange={(e) => {setIv(parseFloat(e.target.value) || null); }}/></Box>
+          <Box><TextField id="implied-volatility" label="Implied Volatility (%)" slotProps={{ htmlInput: { style: { textAlign: 'center'}  }}} variant="standard" type="number" value={iv ?? ''} onChange={(e) => {setIv(parseFloat(e.target.value) || null); }}/></Box>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-evenly', padding:'20px' }} >
           <Box sx={{ margin: '0 20px' }}>
